@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://w216gdt0k7jc"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_vyxf4"]
+[ext_resource type="Texture2D" uid="uid://b3q7cqn1wh1lc" path="res://Art/Dumbs/dumb-green.png" id="2_red5o"]
+[ext_resource type="PackedScene" uid="uid://dsc0adp0weuwy" path="res://scenes/gun.tscn" id="3_jkm8u"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_83k7k"]
+radius = 37.7133
+height = 94.2833
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jin2k"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("UI/Label:text")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Gun/Sprite2D:flip_v")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Gun/Sprite2D:flip_h")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[node name="PlayerGreen" type="CharacterBody2D"]
+top_level = true
+scale = Vector2(0.742443, 0.742443)
+script = ExtResource("1_vyxf4")
+metadata/tag = "player"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.081713, 0.099537)
+texture = ExtResource("2_red5o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2.69381)
+shape = SubResource("CapsuleShape2D_83k7k")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_jin2k")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -37.7133
+offset_top = -88.8957
+offset_right = 2.28667
+offset_bottom = -48.8957
+scale = Vector2(1.89381, 3.30769)
+
+[node name="Label" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -12.0253
+offset_top = 5.29466
+offset_right = 92.9747
+offset_bottom = 34.2947
+grow_horizontal = 2
+scale = Vector2(0.229991, 0.190371)
+size_flags_horizontal = 3
+size_flags_vertical = 6
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 203
+
+[node name="Gun" parent="." instance=ExtResource("3_jkm8u")]
