@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://danlos60xe0d5"]
+[gd_scene load_steps=17 format=3 uid="uid://danlos60xe0d5"]
 
 [ext_resource type="Texture2D" uid="uid://dyhyov8vlxw1r" path="res://Art/Projectiles/bullet-idle.png" id="1_0h56j"]
 [ext_resource type="Script" path="res://scripts/projectile.gd" id="1_5s75j"]
@@ -89,6 +89,10 @@ animations = [{
 radius = 6.0
 height = 20.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mxsoa"]
+radius = 6.0
+height = 20.0
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_6xws8"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -111,6 +115,9 @@ properties/5/replication_mode = 1
 properties/6/path = NodePath(".:dir")
 properties/6/spawn = true
 properties/6/replication_mode = 1
+properties/7/path = NodePath(".:life")
+properties/7/spawn = true
+properties/7/replication_mode = 1
 
 [node name="Bullet" type="CharacterBody2D"]
 script = ExtResource("1_5s75j")
@@ -118,14 +125,23 @@ script = ExtResource("1_5s75j")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_fg3sb")
 animation = &"flying"
-frame = 2
-frame_progress = 1.0
+frame_progress = 0.0853517
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_n6dku")
 
+[node name="Area2D" type="Area2D" parent="."]
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_mxsoa")
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_6xws8")
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

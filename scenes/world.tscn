@@ -117,7 +117,7 @@ position = Vector2(577, 648)
 scale = Vector2(-57.6931, -2.09286)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ComeBack"]
-position = Vector2(-0.017333, -81.2286)
+position = Vector2(-0.95332, -89.8292)
 shape = SubResource("RectangleShape2D_fo8dy")
 
 [node name="Network" type="Node" parent="."]

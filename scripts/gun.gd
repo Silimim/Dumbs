@@ -4,9 +4,10 @@ extends Node2D
 @export var SPEED = 100
 @export var dir = 1
 
-@rpc("authority", "call_local")
+@rpc("any_peer", "call_local")
 func shoot():
 	var projectile = projectile_scene.instantiate()
+	projectile.name = "Projectile_%s" % str(Time.get_ticks_msec())
 	if position.x > 0:
 		dir = 1
 	else:
@@ -15,4 +16,5 @@ func shoot():
 	projectile.spawnPos = global_position
 	projectile.speed = SPEED * dir
 	projectile.dir = dir
+	
 	get_node("../../").call_deferred("add_child", projectile, true)

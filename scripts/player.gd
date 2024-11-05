@@ -4,6 +4,9 @@ extends CharacterBody2D
 @export var gravity = 20
 @export var jump_force = 400
 @export var radius = 45
+
+@export var health = 100.0
+
 var gun: Node2D
 
 @export var player_id := 1:
@@ -43,6 +46,9 @@ func _physics_process(_delta):
 	if not is_multiplayer_authority():
 		return
 		
+	if Input.is_action_just_pressed("shoot"):
+		gun.rpc("shoot")
+		
 	if !is_on_floor():
 		velocity.y += gravity
 		if velocity.y > 500:
@@ -55,6 +61,20 @@ func _physics_process(_delta):
 	var horizhontal_direction = Input.get_axis("move_left", "move_right")
 	velocity.x = horizhontal_direction * speed
 	move_and_slide()
+
+@rpc("authority")
+func take_damage(amount: int):
+	health -= amount
+	print("Player took: ", amount, "damage. Current health: ", health)
 	
-	if Input.is_action_just_pressed("shoot"):
-		gun.rpc("shoot")
+	if health <= 0:
+		die()
+
+func die():
+	print("Player has died.")
+	rpc("player_died")
+	queue_free()
+
+@rpc("any_peer")
+func player_died():
+	print("Player death confirmed on client.")

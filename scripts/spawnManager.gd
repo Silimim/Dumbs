@@ -41,12 +41,12 @@ func add_player(id: int = 1):
 	var player: Node2D
 	if (id == 1):
 		player = playerRed_scene.instantiate()
-		player.position.x = $"0".position.x
-		player.position.y = $"0".position.y
+		player.position.x = $"0".global_position.x
+		player.position.y = $"0".global_position.y
 	else:
 		player = playerGreen_scene.instantiate()
-		player.position.x = $"1".position.x
-		player.position.y = $"1".position.y
+		player.position.x = $"1".global_position.x
+		player.position.y = $"1".global_position.y
 	
 	player.player_id = id
 	player.name = str(id)
@@ -65,12 +65,3 @@ func _on_area_2d_body_entered(body: Node2D):
 		var randIdx = randi_range(0, 1)
 		body.position.x = get_node(str(randIdx)).position.x
 		body.position.y = get_node(str(randIdx)).position.y
-
-
-func _on_bullet_limit_body_exited(body: Node2D):
-	rpc("remove_bullet", body.name)
-
-@rpc("any_peer", "call_remote")
-func remove_bullet(body: StringName):
-	print(str(body))
-	$Network.get_node(str(body)).queue_free()
